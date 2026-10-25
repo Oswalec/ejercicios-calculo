@@ -1,0 +1,53 @@
+---
+import "katex/dist/katex.min.css";
+import "../styles/global.css";
+import { url } from "../lib/url.ts";
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+  noindex?: boolean;
+}
+
+const { titulo, descripcion, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <link rel="icon" type="image/svg+xml" href={url("favicon.svg")} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="saltar" href="#contenido">
+      Saltar al contenido
+    </a>
+    <header class="cabecera">
+      <div class="contenedor">
+        <a class="marca" href={url("")}>
+          Ejercicios de Cálculo
+        </a>
+      </div>
+    </header>
+    <main id="contenido" class="contenedor">
+      <slot />
+    </main>
+    <footer class="pie">
+      <div class="contenedor">
+        Ejercicios resueltos por tu docente de Cálculo · Sitio gratuito y sin
+        anuncios
+      </div>
+    </footer>
+  </body>
+</html>
