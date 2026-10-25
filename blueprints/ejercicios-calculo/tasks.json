@@ -1,0 +1,524 @@
+[
+  {
+    "id": "E1-T1",
+    "title": "Andamiaje, tokens y layout base",
+    "epic": "01-sitio-base",
+    "dependencies": [],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs THE SYSTEM SHALL exit 0 and write `dist/index.html`.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed, asserting `dist/index.html` has `lang=\"es\"`, a non-empty `<title>`, a meta description and a canonical link.",
+      "WHEN `unirRuta(\"/ejercicios-calculo\", \"tema/limites/\")` is called in `tests/estructura.test.mjs` THE SYSTEM SHALL return `\"/ejercicios-calculo/tema/limites/\"`.",
+      "WHEN `tests/estructura.test.mjs` scans every HTML file in `dist/` THE SYSTEM SHALL find that every local `href`/`src` starts with the configured base and every local asset URL with a file extension resolves to an existing file in `dist/`.",
+      "WHEN `npm run format:check` runs THE SYSTEM SHALL exit 0."
+    ],
+    "verify": [
+      "npm run format:check",
+      "npm run build",
+      "test -f dist/index.html",
+      "npm test",
+      "grep -qi -- \"--primary: #1b7f4c\" src/styles/global.css"
+    ],
+    "checkpoint": "step-01-andamiaje",
+    "files": [
+      "src/styles/global.css",
+      "src/layouts/Base.astro",
+      "src/lib/url.ts",
+      "src/pages/index.astro",
+      "tests/estructura.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E1-T2",
+    "title": "Colección de contenido y esquema",
+    "epic": "01-sitio-base",
+    "dependencies": [
+      "E1-T1"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs with the collection and the sample exercise THE SYSTEM SHALL exit 0.",
+      "WHEN `tests/fixtures/ejercicio-invalido.md` is copied into `src/content/ejercicios/limites/` and `npx astro build` runs THE SYSTEM SHALL exit with a non-zero code and print an error containing both `dificultad` and `Invalid option`.",
+      "WHEN `tests/esquema.test.mjs` runs THE SYSTEM SHALL reject `dificultad: \"facil\"`, `tema: \"series\"`, `orden: 1.5` and an extra key, and accept the valid object.",
+      "WHEN `npm test` runs after `npm run build` THE SYSTEM SHALL exit 0 with 0 failed."
+    ],
+    "verify": [
+      "log=\"$(mktemp)\"; cp tests/fixtures/ejercicio-invalido.md src/content/ejercicios/limites/zz-invalido.md; status=0; npx astro build >\"$log\" 2>&1 || status=$?; rm -f src/content/ejercicios/limites/zz-invalido.md; test \"$status\" -ne 0 && grep -q \"dificultad\" \"$log\" && grep -q \"Invalid option\" \"$log\" || false",
+      "npm run build",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-02-contenido",
+    "files": [
+      "src/data/temas.ts",
+      "src/lib/esquema.ts",
+      "src/content.config.ts",
+      "src/content/ejercicios/limites/sustitucion-directa.md",
+      "tests/esquema.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E1-T3",
+    "title": "Pipeline matemático y página permanente",
+    "epic": "01-sitio-base",
+    "dependencies": [
+      "E1-T2"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs THE SYSTEM SHALL write `dist/ejercicio/limites/sustitucion-directa/index.html` containing KaTeX output (`class=\"katex\"`) and no raw `$$`.",
+      "WHEN that page is generated THE SYSTEM SHALL place the solution inside `<details class=\"solucion\">` whose `<summary>` reads `Ver solución`, and SHALL link back to `${base}tema/limites/`.",
+      "WHEN `rehypeSolucion` receives a tree without a `Solución` h2 THE SYSTEM SHALL throw an error whose message contains `## Solución`.",
+      "WHEN an exercise's `tema` differs from its folder name THE SYSTEM SHALL fail the build with an error naming the exercise id (enforced in `getStaticPaths`).",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed."
+    ],
+    "verify": [
+      "npm run build",
+      "test -f dist/ejercicio/limites/sustitucion-directa/index.html",
+      "grep -q 'class=\"katex\"' dist/ejercicio/limites/sustitucion-directa/index.html",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-03-ejercicio",
+    "files": [
+      "src/components/Ejercicio.astro",
+      "src/components/InsigniaDificultad.astro",
+      "src/pages/ejercicio/[...id].astro",
+      "tests/ejercicio.test.mjs",
+      "tests/rehype-solucion.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E1-T4",
+    "title": "Portada con grilla de temas",
+    "epic": "01-sitio-base",
+    "dependencies": [
+      "E1-T3"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs THE SYSTEM SHALL render one card per tema in `src/data/temas.ts` on `dist/index.html`, each linking to `${base}tema/<slug>/`.",
+      "WHEN a tema folder holds N `.md` files THE SYSTEM SHALL render that tema's card with `data-cantidad=\"N\"` (verified against the disk by `tests/inicio.test.mjs`, so a tema with 0 files shows 0).",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed."
+    ],
+    "verify": [
+      "npm run build",
+      "npm test",
+      "grep -q 'data-tema=\"derivadas\"' dist/index.html",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-04-portada",
+    "files": [
+      "src/components/TarjetaTema.astro",
+      "src/lib/ejercicios.ts",
+      "src/pages/index.astro",
+      "tests/inicio.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E1-T5",
+    "title": "Página de tema con lista estática",
+    "epic": "01-sitio-base",
+    "dependencies": [
+      "E1-T4"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs THE SYSTEM SHALL write `dist/tema/<slug>/index.html` for every tema in `src/data/temas.ts`.",
+      "WHEN a tema has N exercises THE SYSTEM SHALL render all N in the HTML in ascending `orden`, with `data-total=\"N\"` on the list and the `hidden` attribute on every item whose index is 10 or more.",
+      "WHEN a tema has 0 exercises THE SYSTEM SHALL render the text `Pronto habrá ejercicios de este tema.` and no list.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed."
+    ],
+    "verify": [
+      "npm run build",
+      "test -f dist/tema/limites/index.html",
+      "test -f dist/tema/integrales/index.html",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-05-tema",
+    "files": [
+      "src/pages/tema/[slug].astro",
+      "tests/tema.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E1-T6",
+    "title": "Selección aleatoria y «Dame otros ejercicios»",
+    "epic": "01-sitio-base",
+    "dependencies": [
+      "E1-T5"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `elegirAleatorios(total, rng)` is called with any `total ≥ 0` THE SYSTEM SHALL return distinct ascending indices in `[0, total)` whose count is between `min(total, 5)` and `min(total, 10)`.",
+      "WHEN `otroConjunto(10, rng, anterior)` is called 50 times in a chain with a seeded `rng` THE SYSTEM SHALL never return the same set as the previous call.",
+      "WHEN `dist/tema/<slug>/index.html` is generated for a tema with exercises THE SYSTEM SHALL contain the button `id=\"otros-ejercicios\"` with `hidden`, the live region `id=\"estado-seleccion\"` with `aria-live=\"polite\"`, and a `<script type=\"module\"`.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed."
+    ],
+    "verify": [
+      "npm run build",
+      "node --test tests/aleatorio.test.mjs",
+      "npm test",
+      "grep -q 'id=\"otros-ejercicios\"' dist/tema/limites/index.html",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-06-aleatorio",
+    "files": [
+      "src/lib/aleatorio.ts",
+      "src/pages/tema/[slug].astro",
+      "tests/aleatorio.test.mjs",
+      "tests/tema.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E1-T7",
+    "title": "Semilla 1: Límites, orden 2 a 6",
+    "epic": "01-sitio-base",
+    "dependencies": [
+      "E1-T6"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs with the 5 new files in `src/content/ejercicios/limites/` THE SYSTEM SHALL exit 0, so every new frontmatter passes the strict schema and every body has `## Enunciado` followed by `## Solución`.",
+      "WHEN each of the 5 new files is read THE SYSTEM SHALL contain a line starting with `**Respuesta:**`.",
+      "WHEN `src/content/ejercicios/limites/` is listed after this step THE SYSTEM SHALL hold exactly 6 `.md` files (1 from step 2 plus 5 new).",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed, including `tests/ejercicio.test.mjs` over every exercise on disk (KaTeX present, no `$$`, `Ver solución` present)."
+    ],
+    "verify": [
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/factorizacion-cero-entre-cero.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/racionalizacion.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/limite-al-infinito-polinomios.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/limite-al-infinito-raices.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/limite-trigonometrico-sen-x-sobre-x.md",
+      "test \"$(ls src/content/ejercicios/limites/*.md | wc -l)\" -eq 6",
+      "npm run build",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-07-semilla-1",
+    "files": [
+      "src/content/ejercicios/limites/factorizacion-cero-entre-cero.md",
+      "src/content/ejercicios/limites/racionalizacion.md",
+      "src/content/ejercicios/limites/limite-al-infinito-polinomios.md",
+      "src/content/ejercicios/limites/limite-al-infinito-raices.md",
+      "src/content/ejercicios/limites/limite-trigonometrico-sen-x-sobre-x.md"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E1-T8",
+    "title": "Semilla 2: Límites 7 a 10 y Derivadas 1",
+    "epic": "01-sitio-base",
+    "dependencies": [
+      "E1-T7"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs with the 5 new files THE SYSTEM SHALL exit 0, so every new frontmatter passes the strict schema and every body has `## Enunciado` followed by `## Solución`.",
+      "WHEN each of the 5 new files is read THE SYSTEM SHALL contain a line starting with `**Respuesta:**`.",
+      "WHEN the content folders are listed after this step THE SYSTEM SHALL hold exactly 10 `.md` files in `src/content/ejercicios/limites/` and exactly 1 in `src/content/ejercicios/derivadas/`.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed, including `tests/ejercicio.test.mjs` over every exercise on disk (KaTeX present, no `$$`, `Ver solución` present)."
+    ],
+    "verify": [
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/limites-laterales-valor-absoluto.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/limite-numero-e.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/continuidad-funcion-a-trozos.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/limites/teorema-del-sandwich.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/regla-de-la-potencia.md",
+      "test \"$(ls src/content/ejercicios/limites/*.md | wc -l)\" -eq 10",
+      "test \"$(ls src/content/ejercicios/derivadas/*.md | wc -l)\" -eq 1",
+      "npm run build",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-08-semilla-2",
+    "files": [
+      "src/content/ejercicios/limites/limites-laterales-valor-absoluto.md",
+      "src/content/ejercicios/limites/limite-numero-e.md",
+      "src/content/ejercicios/limites/continuidad-funcion-a-trozos.md",
+      "src/content/ejercicios/limites/teorema-del-sandwich.md",
+      "src/content/ejercicios/derivadas/regla-de-la-potencia.md"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E2-T1",
+    "title": "Semilla 3: Derivadas, orden 2 a 6",
+    "epic": "02-contenido-y-publicacion",
+    "dependencies": [
+      "E1-T8"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs with the 5 new files in `src/content/ejercicios/derivadas/` THE SYSTEM SHALL exit 0, so every new frontmatter passes the strict schema and every body has `## Enunciado` followed by `## Solución`.",
+      "WHEN each of the 5 new files is read THE SYSTEM SHALL contain a line starting with `**Respuesta:**`.",
+      "WHEN `src/content/ejercicios/derivadas/` is listed after this step THE SYSTEM SHALL hold exactly 6 `.md` files.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed, including `tests/ejercicio.test.mjs` over every exercise on disk (KaTeX present, no `$$`, `Ver solución` present)."
+    ],
+    "verify": [
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/regla-del-producto.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/regla-del-cociente.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/regla-de-la-cadena.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/derivadas-trigonometricas.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/exponencial-y-logaritmo.md",
+      "test \"$(ls src/content/ejercicios/derivadas/*.md | wc -l)\" -eq 6",
+      "npm run build",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-09-semilla-3",
+    "files": [
+      "src/content/ejercicios/derivadas/regla-del-producto.md",
+      "src/content/ejercicios/derivadas/regla-del-cociente.md",
+      "src/content/ejercicios/derivadas/regla-de-la-cadena.md",
+      "src/content/ejercicios/derivadas/derivadas-trigonometricas.md",
+      "src/content/ejercicios/derivadas/exponencial-y-logaritmo.md"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E2-T2",
+    "title": "Semilla 4: Derivadas 7 a 10 e Integrales 1",
+    "epic": "02-contenido-y-publicacion",
+    "dependencies": [
+      "E2-T1"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs with the 5 new files THE SYSTEM SHALL exit 0, so every new frontmatter passes the strict schema and every body has `## Enunciado` followed by `## Solución`.",
+      "WHEN each of the 5 new files is read THE SYSTEM SHALL contain a line starting with `**Respuesta:**`.",
+      "WHEN the content folders are listed after this step THE SYSTEM SHALL hold exactly 10 `.md` files in `src/content/ejercicios/derivadas/` and exactly 1 in `src/content/ejercicios/integrales/`.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed, including `tests/ejercicio.test.mjs` over every exercise on disk (KaTeX present, no `$$`, `Ver solución` present)."
+    ],
+    "verify": [
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/derivacion-implicita.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/recta-tangente.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/segunda-derivada.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/derivadas/razon-de-cambio.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/integrales-inmediatas.md",
+      "test \"$(ls src/content/ejercicios/derivadas/*.md | wc -l)\" -eq 10",
+      "test \"$(ls src/content/ejercicios/integrales/*.md | wc -l)\" -eq 1",
+      "npm run build",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-10-semilla-4",
+    "files": [
+      "src/content/ejercicios/derivadas/derivacion-implicita.md",
+      "src/content/ejercicios/derivadas/recta-tangente.md",
+      "src/content/ejercicios/derivadas/segunda-derivada.md",
+      "src/content/ejercicios/derivadas/razon-de-cambio.md",
+      "src/content/ejercicios/integrales/integrales-inmediatas.md"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E2-T3",
+    "title": "Semilla 5: Integrales, orden 2 a 6",
+    "epic": "02-contenido-y-publicacion",
+    "dependencies": [
+      "E2-T2"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `npm run build` runs with the 5 new files in `src/content/ejercicios/integrales/` THE SYSTEM SHALL exit 0, so every new frontmatter passes the strict schema and every body has `## Enunciado` followed by `## Solución`.",
+      "WHEN each of the 5 new files is read THE SYSTEM SHALL contain a line starting with `**Respuesta:**`.",
+      "WHEN `src/content/ejercicios/integrales/` is listed after this step THE SYSTEM SHALL hold exactly 6 `.md` files.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed, including `tests/ejercicio.test.mjs` over every exercise on disk (KaTeX present, no `$$`, `Ver solución` present)."
+    ],
+    "verify": [
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/sustitucion-simple.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/integral-trigonometrica-basica.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/sustitucion-exponencial.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/integracion-por-partes.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/por-partes-logaritmo.md",
+      "test \"$(ls src/content/ejercicios/integrales/*.md | wc -l)\" -eq 6",
+      "npm run build",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-11-semilla-5",
+    "files": [
+      "src/content/ejercicios/integrales/sustitucion-simple.md",
+      "src/content/ejercicios/integrales/integral-trigonometrica-basica.md",
+      "src/content/ejercicios/integrales/sustitucion-exponencial.md",
+      "src/content/ejercicios/integrales/integracion-por-partes.md",
+      "src/content/ejercicios/integrales/por-partes-logaritmo.md"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E2-T4",
+    "title": "Semilla 6: Integrales 7 a 10 y prueba de contenido",
+    "epic": "02-contenido-y-publicacion",
+    "dependencies": [
+      "E2-T3"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN each of the 4 new files is read THE SYSTEM SHALL contain a line starting with `**Respuesta:**`.",
+      "WHEN `tests/contenido.test.mjs` runs THE SYSTEM SHALL find all 30 named files, exactly 10 per tema, each with frontmatter valid under the strict schema whose `tema` equals its folder, with no repeated `orden` within a tema and no repeated `titulo` in the site.",
+      "WHEN any exercise body is read by `tests/contenido.test.mjs` THE SYSTEM SHALL find `## Enunciado` before `## Solución`, and a numbered step `1. ` and a `**Respuesta:**` line after `## Solución`.",
+      "WHEN `npm test` runs after `npm run build` THE SYSTEM SHALL exit 0 with 0 failed, with each tema page holding as many `data-indice` items as that tema has files."
+    ],
+    "verify": [
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/fracciones-parciales.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/integral-definida-tfc.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/area-entre-curvas.md",
+      "grep -q '^\\*\\*Respuesta:\\*\\*' src/content/ejercicios/integrales/integral-definida-sustitucion.md",
+      "npm run build",
+      "node --test tests/contenido.test.mjs",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-12-semilla-6",
+    "files": [
+      "src/content/ejercicios/integrales/fracciones-parciales.md",
+      "src/content/ejercicios/integrales/integral-definida-tfc.md",
+      "src/content/ejercicios/integrales/area-entre-curvas.md",
+      "src/content/ejercicios/integrales/integral-definida-sustitucion.md",
+      "tests/contenido.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E2-T5",
+    "title": "Búsqueda con Pagefind",
+    "epic": "02-contenido-y-publicacion",
+    "dependencies": [
+      "E2-T4"
+    ],
+    "priority": "p1",
+    "acceptance": [
+      "WHEN `npm run build` runs THE SYSTEM SHALL produce `dist/pagefind/pagefind-ui.js`, `dist/pagefind/pagefind-ui.css` and `dist/pagefind/pagefind-entry.json`.",
+      "WHEN `dist/index.html` is generated THE SYSTEM SHALL load `pagefind-ui.js` from `${base}pagefind/` and initialise `PagefindUI` with `baseUrl` equal to the base.",
+      "WHEN the site is built THE SYSTEM SHALL mark every exercise permalink page with `data-pagefind-body` and no home or tema page.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed."
+    ],
+    "verify": [
+      "npm run build",
+      "test -f dist/pagefind/pagefind-ui.js",
+      "test -f dist/pagefind/pagefind-entry.json",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-13-busqueda",
+    "files": [
+      "src/pages/index.astro",
+      "src/pages/ejercicio/[...id].astro",
+      "tests/busqueda.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E2-T6",
+    "title": "SEO: sitemap, robots, 404 y metadatos",
+    "epic": "02-contenido-y-publicacion",
+    "dependencies": [
+      "E2-T5"
+    ],
+    "priority": "p1",
+    "acceptance": [
+      "WHEN `npm run build` runs THE SYSTEM SHALL write `dist/robots.txt` with `User-agent: *` and `Sitemap: <origin><base>sitemap-index.xml`.",
+      "WHEN the sitemap is generated THE SYSTEM SHALL list the home, every tema page and every exercise page as `<origin><base><path>`, and SHALL NOT list the 404 page.",
+      "WHEN `dist/404.html` is generated THE SYSTEM SHALL include `<meta name=\"robots\" content=\"noindex\" />` and a link to the home.",
+      "WHEN `tests/seo.test.mjs` compares every page except 404 THE SYSTEM SHALL find a canonical equal to `<origin><base><path>` (origin normalized with `new URL(SITE_URL).origin`) and no duplicated `<title>` or meta description.",
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL exit 0 with 0 failed."
+    ],
+    "verify": [
+      "npm run build",
+      "test -f dist/404.html",
+      "test -f dist/robots.txt",
+      "grep -q \"User-agent: \\*\" dist/robots.txt",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-14-seo",
+    "files": [
+      "src/pages/robots.txt.ts",
+      "src/pages/404.astro",
+      "tests/seo.test.mjs"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E2-T7",
+    "title": "Suite de humo y accesibilidad básica",
+    "epic": "02-contenido-y-publicacion",
+    "dependencies": [
+      "E2-T6"
+    ],
+    "priority": "p1",
+    "acceptance": [
+      "WHEN `npm test` runs after the build THE SYSTEM SHALL find a generated file for the home, the 404, every tema and every exercise, and zero internal page links that resolve to a missing file.",
+      "WHEN any generated HTML is scanned THE SYSTEM SHALL find `lang=\"es\"`, exactly one `<h1`, a viewport meta, a skip link to `#contenido`, no raw `$$` and no `katex-error`.",
+      "WHEN every tema page is scanned THE SYSTEM SHALL find `data-total` of at least 5 (`MINIMO`).",
+      "WHEN the eight token pairs are computed from `src/styles/global.css` in light and dark mode THE SYSTEM SHALL find every contrast ratio ≥ 4.5.",
+      "WHEN the whole suite runs with `node --test --test-reporter=tap \"tests/**/*.test.mjs\"` THE SYSTEM SHALL exit 0 and its report SHALL contain the lines `# skipped 0` and `# todo 0`."
+    ],
+    "verify": [
+      "npm run build",
+      "npm test",
+      "out=\"$(mktemp)\" && node --test --test-reporter=tap \"tests/**/*.test.mjs\" >\"$out\" 2>&1 && grep -qx \"# skipped 0\" \"$out\" && grep -qx \"# todo 0\" \"$out\" || false",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-15-calidad",
+    "files": [
+      "tests/smoke.test.mjs",
+      "tests/accesibilidad.test.mjs",
+      "src/layouts/Base.astro",
+      "src/styles/global.css",
+      "src/components/Ejercicio.astro"
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "E2-T8",
+    "title": "Workflow de despliegue a GitHub Pages",
+    "epic": "02-contenido-y-publicacion",
+    "dependencies": [
+      "E2-T7"
+    ],
+    "priority": "p0",
+    "acceptance": [
+      "WHEN `.github/workflows/deploy.yml` is read THE SYSTEM SHALL reference `actions/checkout@v7`, `actions/setup-node@v7`, `actions/configure-pages@v6`, `actions/upload-pages-artifact@v5` and `actions/deploy-pages@v5`, and contain `node-version-file: .nvmrc`.",
+      "WHEN `.github/workflows/deploy.yml` is read THE SYSTEM SHALL contain `run: npm ci`, `run: npm run format:check`, `run: npm run build` and `run: npm test`, in that order, each on a line before `actions/upload-pages-artifact`.",
+      "WHEN `SITE_URL=https://ejemplo.github.io BASE_PATH=/ejercicios-calculo npm run build` and then the same-env `npm test` run THE SYSTEM SHALL exit 0, with every local link in `dist/` prefixed by `/ejercicios-calculo/`.",
+      "WHEN that base build is inspected THE SYSTEM SHALL contain `href=\"/ejercicios-calculo/tema/limites/\"` in `dist/index.html` and the canonical `https://ejemplo.github.io/ejercicios-calculo/`."
+    ],
+    "verify": [
+      "test -f .github/workflows/deploy.yml",
+      "grep -q \"actions/checkout@v7\" .github/workflows/deploy.yml",
+      "grep -q \"actions/setup-node@v7\" .github/workflows/deploy.yml",
+      "grep -q \"actions/configure-pages@v6\" .github/workflows/deploy.yml",
+      "grep -q \"actions/upload-pages-artifact@v5\" .github/workflows/deploy.yml",
+      "grep -q \"actions/deploy-pages@v5\" .github/workflows/deploy.yml",
+      "grep -q \"node-version-file: .nvmrc\" .github/workflows/deploy.yml",
+      "grep -q \"run: npm ci\" .github/workflows/deploy.yml",
+      "grep -q \"run: npm run format:check\" .github/workflows/deploy.yml",
+      "grep -q \"run: npm run build\" .github/workflows/deploy.yml",
+      "grep -q \"run: npm test\" .github/workflows/deploy.yml",
+      "awk '/run: npm ci/{a=NR} /run: npm run format:check/{b=NR} /run: npm run build/{c=NR} /run: npm test/{d=NR} /actions\\/upload-pages-artifact/{e=NR} END{exit !(a && a<b && b<c && c<d && d<e)}' .github/workflows/deploy.yml",
+      "SITE_URL=https://ejemplo.github.io BASE_PATH=/ejercicios-calculo npm run build",
+      "SITE_URL=https://ejemplo.github.io BASE_PATH=/ejercicios-calculo npm test",
+      "grep -q 'href=\"/ejercicios-calculo/tema/limites/\"' dist/index.html",
+      "grep -q \"https://ejemplo.github.io/ejercicios-calculo/\" dist/index.html",
+      "npm run build",
+      "npm test",
+      "npm run format:check"
+    ],
+    "checkpoint": "step-16-despliegue",
+    "files": [
+      ".github/workflows/deploy.yml",
+      "README.md"
+    ],
+    "status": "pending"
+  }
+]
