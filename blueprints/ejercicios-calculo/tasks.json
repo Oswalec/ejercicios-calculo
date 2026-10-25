@@ -27,7 +27,7 @@
       "src/pages/index.astro",
       "tests/estructura.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E1-T2",
@@ -57,7 +57,7 @@
       "src/content/ejercicios/limites/sustitucion-directa.md",
       "tests/esquema.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E1-T3",
@@ -89,7 +89,7 @@
       "tests/ejercicio.test.mjs",
       "tests/rehype-solucion.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E1-T4",
@@ -117,7 +117,7 @@
       "src/pages/index.astro",
       "tests/inicio.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E1-T5",
@@ -145,7 +145,7 @@
       "src/pages/tema/[slug].astro",
       "tests/tema.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E1-T6",
@@ -175,7 +175,7 @@
       "tests/aleatorio.test.mjs",
       "tests/tema.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E1-T7",
@@ -210,7 +210,7 @@
       "src/content/ejercicios/limites/limite-al-infinito-raices.md",
       "src/content/ejercicios/limites/limite-trigonometrico-sen-x-sobre-x.md"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E1-T8",
@@ -246,7 +246,7 @@
       "src/content/ejercicios/limites/teorema-del-sandwich.md",
       "src/content/ejercicios/derivadas/regla-de-la-potencia.md"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E2-T1",
@@ -281,7 +281,7 @@
       "src/content/ejercicios/derivadas/derivadas-trigonometricas.md",
       "src/content/ejercicios/derivadas/exponencial-y-logaritmo.md"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E2-T2",
@@ -317,7 +317,7 @@
       "src/content/ejercicios/derivadas/razon-de-cambio.md",
       "src/content/ejercicios/integrales/integrales-inmediatas.md"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E2-T3",
@@ -352,7 +352,7 @@
       "src/content/ejercicios/integrales/integracion-por-partes.md",
       "src/content/ejercicios/integrales/por-partes-logaritmo.md"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E2-T4",
@@ -386,7 +386,7 @@
       "src/content/ejercicios/integrales/integral-definida-sustitucion.md",
       "tests/contenido.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E2-T5",
@@ -415,7 +415,7 @@
       "src/pages/ejercicio/[...id].astro",
       "tests/busqueda.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E2-T6",
@@ -446,7 +446,7 @@
       "src/pages/404.astro",
       "tests/seo.test.mjs"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E2-T7",
@@ -477,7 +477,7 @@
       "src/styles/global.css",
       "src/components/Ejercicio.astro"
     ],
-    "status": "pending"
+    "status": "done"
   },
   {
     "id": "E2-T8",
@@ -519,6 +519,6 @@
       ".github/workflows/deploy.yml",
       "README.md"
     ],
-    "status": "pending"
+    "status": "done"
   }
 ]
