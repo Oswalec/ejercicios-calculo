@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import { url } from "../lib/url.ts";
+---
+
+<Base
+  titulo="Página no encontrada | Ejercicios de Cálculo"
+  descripcion="La página que buscas no existe. Vuelve al inicio para elegir un tema de Cálculo."
+  noindex={true}
+>
+  <h1>Página no encontrada</h1>
+  <p>
+    La página que buscas no existe o cambió de dirección. Elige un tema desde el
+    inicio.
+  </p>
+  <a href={url("")}>Ir al inicio</a>
+</Base>
