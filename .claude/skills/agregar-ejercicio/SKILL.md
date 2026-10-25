@@ -1,29 +1,36 @@
 ---
 name: agregar-ejercicio
-description: Agrega un ejercicio resuelto nuevo al sitio (archivo Markdown + LaTeX en src/content/ejercicios/<tema>/). Úsala cuando digan "agrega un ejercicio", "nuevo ejercicio de límites/derivadas/integrales", "sube este problema resuelto" o pasen un enunciado con su solución.
+description: Agrega ejercicios resueltos al sitio (Markdown + LaTeX en src/content/ejercicios/<tema>/<seccion>/). Úsala cuando digan "agrega un ejercicio", "completa la sección 2.4", "10 ejercicios de límites laterales", "sube este problema resuelto" o pasen un enunciado con su solución.
 ---
 
-# Agregar un ejercicio
+# Agregar ejercicios
 
 ## Cuándo usarla
-- El docente pide agregar un ejercicio o pega un enunciado con su solución.
-- Se necesita completar un tema con más ejercicios.
+- El docente pide ejercicios para una sección del sílabo (p. ej. «2.2 Límites laterales»).
+- El docente pega un enunciado con su solución.
 
 ## Pasos
-1. Elige el tema: un `slug` de `src/data/temas.ts` (`limites`, `derivadas`, `integrales`). Un tema nuevo exige editar `temas.ts` primero.
-2. Elige un nombre de archivo en minúsculas ASCII y kebab-case, sin tildes: `src/content/ejercicios/<tema>/<slug>.md`. No reutilices un nombre: el nombre es la URL permanente.
-3. Escribe el frontmatter de exactamente 4 líneas: `titulo: "…"` (único en el sitio), `tema: "<tema>"` (igual a la carpeta), `dificultad: "basico" | "intermedio" | "avanzado"`, `orden: <siguiente entero libre del tema>`.
-4. Cuerpo: `## Enunciado`, el enunciado con la fórmula en `$$ … $$` en líneas propias; `## Solución` con pasos numerados `1.`, `2.`, … que justifican cada regla; última línea `**Respuesta:** <respuesta en LaTeX>`.
-5. LaTeX: seno con `\operatorname{sen}`; nada de tildes dentro de `$…$` (usa `\text{}`); ningún `$` fuera de matemáticas.
-6. Si el tema tiene una lista fija en `tests/contenido.test.mjs`, agrega el archivo nuevo a esa lista.
+1. Ubica la sección en `src/data/temas.ts`: el `slug` del tema (unidad) y el `slug` de la sección. Lee sus `contenidos`: los ejercicios de la sección deben repartirse entre esos contenidos.
+2. Cada sección tiene como máximo 10 ejercicios (`EJERCICIOS_POR_SECCION`). Cuenta los que ya hay en la carpeta.
+3. Ruta: `src/content/ejercicios/<tema>/<seccion>/<slug>.md`, con `<slug>` en minúsculas ASCII y kebab-case, sin tildes. No reutilices un nombre: el nombre es la URL permanente.
+4. Frontmatter de exactamente 6 líneas:
+   - `titulo: "…"` (único en el sitio)
+   - `tema: "<tema>"` y `seccion: "<seccion>"` (iguales a las carpetas)
+   - `dificultad: "basico" | "intermedio" | "avanzado"`
+   - `metodo: "…"` (p. ej. «Factorización», «Racionalización con el conjugado», «Teorema del encaje»)
+   - `orden: <siguiente entero libre de la sección>`
+5. Cuerpo: `## Enunciado` con el problema (fórmula en `$$ … $$` en líneas propias); `## Solución` con el desarrollo en pasos numerados `1.`, `2.`, … que justifican cada regla; última línea `**Resultado final:** …`.
+6. Criterios del docente: notación correcta; comprobar dominios y soluciones; preferir métodos formales; **no** usar equivalencias asintóticas (~), argumentos heurísticos ni aproximaciones innecesarias; enunciados y soluciones originales (los libros solo como referencia temática).
+7. LaTeX: seno con `\operatorname{sen}`; nada de tildes dentro de `$…$` (usa `\text{}`); ningún `$` fuera de matemáticas.
 
 ## Verificar
 ```bash
 npm run build          # expect: exit 0 — un frontmatter inválido falla nombrando el campo
-npm test               # expect: exit 0, 0 failed — sin `$$` crudo, sin katex-error, enlaces internos válidos
+npm test               # expect: exit 0, 0 failed — sin `$$` crudo, sin katex-error, ≤ 10 por sección
 npm run format:check   # expect: exit 0
 ```
 
 ## No hagas
-- No inventes la respuesta: si el docente no la dio, resuélvela paso a paso y márcala para su revisión en el mensaje de commit.
+- No inventes la respuesta: resuelve paso a paso y verifica el resultado (por sustitución, derivando, etc.).
 - No uses claves de frontmatter extra: el esquema es estricto y el build falla.
+- No agregues TIP DE EXAMEN ni ERROR COMÚN: el docente decidió no incluirlos.

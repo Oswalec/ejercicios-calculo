@@ -7,7 +7,9 @@ export const esquemaEjercicio = z
   .object({
     titulo: z.string().min(1),
     tema: z.enum(SLUGS_TEMAS),
+    seccion: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
     dificultad: z.enum(DIFICULTADES),
+    metodo: z.string().min(1),
     orden: z.number().int().positive(),
   })
   .strict();

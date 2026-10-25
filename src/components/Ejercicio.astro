@@ -1,6 +1,7 @@
 ---
 import { render, type CollectionEntry } from "astro:content";
 import InsigniaDificultad from "./InsigniaDificultad.astro";
+import { buscarSeccion, buscarTema } from "../data/temas.ts";
 import { url } from "../lib/url.ts";
 
 interface Props {
@@ -12,11 +13,36 @@ interface Props {
 const { ejercicio, nivelTitulo, enlazar } = Astro.props;
 const { Content } = await render(ejercicio);
 const Titulo = nivelTitulo === 1 ? "h1" : "h2";
+const tema = buscarTema(ejercicio.data.tema);
+const seccion = buscarSeccion(ejercicio.data.tema, ejercicio.data.seccion);
+if (!tema || !seccion) {
+  throw new Error(
+    `El ejercicio ${ejercicio.id} apunta a una sección que no existe: ${ejercicio.data.tema}/${ejercicio.data.seccion}.`,
+  );
+}
 ---
 
 <article class="tarjeta-ejercicio">
   <Titulo class="titulo-ejercicio">{ejercicio.data.titulo}</Titulo>
-  <InsigniaDificultad dificultad={ejercicio.data.dificultad} />
+  <dl class="ficha">
+    <div>
+      <dt>Tema</dt>
+      <dd>
+        {tema.numero}. {tema.nombre} › {seccion.numero}
+        {seccion.nombre}
+      </dd>
+    </div>
+    <div>
+      <dt>Dificultad</dt>
+      <dd>
+        <InsigniaDificultad dificultad={ejercicio.data.dificultad} />
+      </dd>
+    </div>
+    <div>
+      <dt>Método</dt>
+      <dd>{ejercicio.data.metodo}</dd>
+    </div>
+  </dl>
   <div class="cuerpo-ejercicio">
     <Content />
   </div>
@@ -37,6 +63,28 @@ const Titulo = nivelTitulo === 1 ? "h1" : "h2";
   }
   .titulo-ejercicio {
     margin-block: 0 var(--espacio-2);
+  }
+  .ficha {
+    display: grid;
+    gap: var(--espacio-1);
+    margin: 0 0 var(--espacio-4);
+    font-size: 0.9375rem;
+  }
+  .ficha div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--espacio-2);
+  }
+  .ficha dt {
+    font-weight: 700;
+    color: var(--fg-muted);
+  }
+  .ficha dt::after {
+    content: ":";
+  }
+  .ficha dd {
+    margin: 0;
   }
   .cuerpo-ejercicio :global(details.solucion) {
     background: var(--surface);

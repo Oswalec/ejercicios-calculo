@@ -10,7 +10,7 @@ import {
   ejerciciosEnDisco,
 } from "./ayudantes.mjs";
 
-test("la portada muestra una tarjeta por tema con su cantidad real", () => {
+test("la portada muestra una tarjeta por unidad con su cantidad real", () => {
   exigirDist();
   const html = leer(join(DIST, "index.html"));
   const enDisco = ejerciciosEnDisco();

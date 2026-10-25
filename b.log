@@ -1,0 +1,159 @@
+
+> ejercicios-calculo@1.0.0 build
+> astro check && astro build && pagefind --site dist
+
+[astro] `markdown.remarkPlugins`, `markdown.rehypePlugins`, and `markdown.remarkRehype` are deprecated. Pass them to `unified({...})` from `@astrojs/markdown-remark` directly instead.
+[2m10:11:57[22m [34m[content][39m Syncing content
+[2m10:11:58[22m [34m[content][39m Synced content
+[2m10:11:58[22m [34m[types][39m Generated [2m1.89s[22m
+[2m10:11:58[22m [34m[check][39m Getting diagnostics for Astro files in C:\Users\Oswaldo\ejercicios-calculo...
+Result (30 files): 
+- 0 errors
+- 0 warnings
+- 0 hints
+
+[astro] `markdown.remarkPlugins`, `markdown.rehypePlugins`, and `markdown.remarkRehype` are deprecated. Pass them to `unified({...})` from `@astrojs/markdown-remark` directly instead.
+[2m10:12:04[22m [34m[content][39m Syncing content
+[2m10:12:04[22m [34m[content][39m Synced content
+[2m10:12:04[22m [34m[types][39m Generated [2m427ms[22m
+[2m10:12:04[22m [34m[build][39m output: [34m"static"[39m
+[2m10:12:04[22m [34m[build][39m mode: [34m"static"[39m
+[2m10:12:04[22m [34m[build][39m directory: [34mC:\Users\Oswaldo\ejercicios-calculo\dist\[39m
+[2m10:12:04[22m [34m[build][39m Collecting build info...
+[2m10:12:04[22m [34m[build][39m [32m✓ Completed in 472ms.[39m
+[2m10:12:04[22m [34m[build][39m Building static entrypoints...
+[2m10:12:05[22m [34m[vite][39m [32m✓ built in 659ms[39m
+[2m10:12:05[22m [34m[vite][39m [32m✓ built in 12ms[39m
+[2m10:12:05[22m [34m[build][39m Rearranging server assets...
+
+[42m[30m generating static routes [39m[49m
+[2m10:12:05[22m   [34m├─[39m [2m/404.html[22m [2m(+24ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/aplicaciones-derivada/concavidad/segunda-derivada/index.html[22m [2m(+6ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/aplicaciones-derivada/tasas-relacionadas-aproximacion/razon-de-cambio/index.html[22m [2m(+3ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/continuidad/determinacion-de-parametros/continuidad-funcion-a-trozos/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/derivadas/aplicaciones-geometricas/recta-tangente/index.html[22m [2m(+3ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/derivadas/exponenciales-logaritmicas/exponencial-y-logaritmo/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/derivadas/implicita-y-otras-tecnicas/derivacion-implicita/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/derivadas/producto-cociente-cadena/regla-de-la-cadena/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/derivadas/producto-cociente-cadena/regla-del-cociente/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/derivadas/producto-cociente-cadena/regla-del-producto/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/derivadas/reglas-basicas/regla-de-la-potencia/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/derivadas/trigonometricas/derivadas-trigonometricas/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/integrales/fracciones-parciales/fracciones-parciales/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/integrales/impropias-y-aplicaciones/area-entre-curvas/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/integrales/integrales-definidas/integral-definida-sustitucion/index.html[22m [2m(+2ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/integrales/integrales-definidas/integral-definida-tfc/index.html[22m [2m(+1ms)[22m 
+[2m10:12:05[22m   [34m├─[39m [2m/ejercicio/integrales/integrales-inmediatas/integrales-inmediatas/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/integrales/por-partes/integracion-por-partes/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/integrales/por-partes/por-partes-logaritmo/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/integrales/sustitucion/integral-trigonometrica-basica/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/integrales/sustitucion/sustitucion-exponencial/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/integrales/sustitucion/sustitucion-simple/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/exponenciales-logaritmicos/limite-numero-e/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/fundamentos/sustitucion-directa/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/limites-al-infinito/limite-al-infinito-polinomios/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/limites-al-infinito/limite-al-infinito-raices/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/limites-algebraicos/factorizacion-cero-entre-cero/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/limites-con-radicales/racionalizacion/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/limites-laterales/limites-laterales-valor-absoluto/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/limites-trigonometricos/limite-trigonometrico-sen-x-sobre-x/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/ejercicio/limites/teoremas-aplicaciones/teorema-del-sandwich/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/robots.txt[22m [2m(+4ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/conceptos-fundamentales/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/dominio/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/rango/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/tipos-de-funciones/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/operaciones/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/composicion/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/funciones-inversas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/inyectividad-sobreyectividad/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/transformaciones-graficas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/otras-propiedades/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/fundamentos/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/limites-laterales/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/limites-algebraicos/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/indeterminaciones/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/limites-con-radicales/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/limites-trigonometricos/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/exponenciales-logaritmicos/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/limites-al-infinito/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/limites-infinitos/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/teoremas-aplicaciones/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/continuidad/conceptos-de-continuidad/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/continuidad/tipos-de-discontinuidad/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/continuidad/funciones-elementales/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/continuidad/determinacion-de-parametros/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/continuidad/teoremas-de-continuidad/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/continuidad/continuidad-uniforme-aplicaciones/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/fundamentos/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/demostraciones-por-definicion/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/reglas-basicas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/producto-cociente-cadena/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/exponenciales-logaritmicas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/trigonometricas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/trigonometricas-inversas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/implicita-y-otras-tecnicas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/aplicaciones-geometricas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/aplicaciones-fisicas-diferenciales/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/aplicaciones-derivada/crecimiento/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/aplicaciones-derivada/concavidad/index.html[22m [2m(+3ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/aplicaciones-derivada/optimizacion/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/aplicaciones-derivada/tasas-relacionadas-aproximacion/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/fundamentos/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/integrales-inmediatas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/sustitucion/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/por-partes/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/trigonometricas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/sustitucion-trigonometrica/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/fracciones-parciales/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/otras-tecnicas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/integrales-definidas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/impropias-y-aplicaciones/index.html[22m [2m(+2ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/funciones/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/limites/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/continuidad/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/derivadas/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/aplicaciones-derivada/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/tema/integrales/index.html[22m [2m(+1ms)[22m 
+[2m10:12:06[22m   [34m├─[39m [2m/index.html[22m [2m(+3ms)[22m 
+[2m10:12:06[22m [32m✓ Completed in 227ms.
+[39m
+[2m10:12:06[22m [34m[build][39m [32m✓ Completed in 1.19s.[39m
+[2m10:12:06[22m [34m[@astrojs/sitemap][39m `sitemap-index.xml` created at `dist`
+[2m10:12:06[22m [34m[build][39m 88 page(s) built in [1m1.73s[22m
+[2m10:12:06[22m [34m[build][39m [1mComplete![22m
+
+Running Pagefind v1.5.2 (Extended)
+Running from: "C:\\Users\\Oswaldo\\ejercicios-calculo"
+Source:       "dist"
+Output:       "dist\\pagefind"
+
+[Walking source directory]
+Found 88 files matching **/*.{html}
+
+[Parsing files]
+Found a data-pagefind-body element on the site.
+↳ Ignoring pages without this tag.
+
+[Reading languages]
+Discovered 1 language: es
+
+[Building search indexes]
+Total: 
+  Indexed 1 language
+  Indexed 30 pages
+  Indexed 1395 words
+  Indexed 0 filters
+  Indexed 0 sorts
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│  Pagefind found references to the Default UI (pagefind-ui.js)           │
+│  on your site. The Default UI is supported and will continue            │
+│  to work.                                                               │
+│                                                                         │
+│  As of 1.5.0, if you are setting up a new integration, use the          │
+│  Component UI instead. It includes a search modal, better               │
+│  accessibility and customization: https://pagefind.app/docs/search-ui/  │
+└─────────────────────────────────────────────────────────────────────────┘
+
+Finished in 0.165 seconds

@@ -38,8 +38,11 @@ test("el sitemap lista inicio, temas y ejercicios, y no la 404", () => {
   const esperadas = [
     `${SITIO}${PREFIJO}`,
     ...temas.map((t) => `${SITIO}${PREFIJO}tema/${t.slug}/`),
+    ...temas.flatMap((t) =>
+      t.secciones.map((s) => `${SITIO}${PREFIJO}tema/${t.slug}/${s.slug}/`),
+    ),
     ...ejerciciosEnDisco().map(
-      (e) => `${SITIO}${PREFIJO}ejercicio/${e.tema}/${e.slug}/`,
+      (e) => `${SITIO}${PREFIJO}ejercicio/${e.tema}/${e.seccion}/${e.slug}/`,
     ),
   ];
   for (const loc of esperadas) {

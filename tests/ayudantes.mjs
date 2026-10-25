@@ -46,19 +46,24 @@ export function listarHtml() {
 export function ejerciciosEnDisco() {
   if (!existsSync(CONTENIDO)) return [];
   const resultado = [];
-  const temas = readdirSync(CONTENIDO, { withFileTypes: true })
-    .filter((entrada) => entrada.isDirectory())
-    .map((entrada) => entrada.name)
-    .sort();
-  for (const tema of temas) {
-    const carpeta = join(CONTENIDO, tema);
-    for (const archivo of readdirSync(carpeta).sort()) {
-      if (archivo.endsWith(".md")) {
-        resultado.push({
-          tema,
-          slug: archivo.slice(0, -".md".length),
-          ruta: join(carpeta, archivo),
-        });
+  const subcarpetas = (carpeta) =>
+    readdirSync(carpeta, { withFileTypes: true })
+      .filter((entrada) => entrada.isDirectory())
+      .map((entrada) => entrada.name)
+      .sort();
+  // Estructura: src/content/ejercicios/<tema>/<seccion>/<slug>.md
+  for (const tema of subcarpetas(CONTENIDO)) {
+    for (const seccion of subcarpetas(join(CONTENIDO, tema))) {
+      const carpeta = join(CONTENIDO, tema, seccion);
+      for (const archivo of readdirSync(carpeta).sort()) {
+        if (archivo.endsWith(".md")) {
+          resultado.push({
+            tema,
+            seccion,
+            slug: archivo.slice(0, -".md".length),
+            ruta: join(carpeta, archivo),
+          });
+        }
       }
     }
   }

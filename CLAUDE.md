@@ -1,6 +1,6 @@
 # Ejercicios Resueltos de Cálculo
 
-Sitio estático y gratuito: el estudiante elige un tema (límites, derivadas, integrales) y recibe de 5 a 10 ejercicios resueltos paso a paso, con fórmulas renderizadas por KaTeX. Contenido escrito por el docente en Markdown + LaTeX. Costo: cero.
+Sitio estático y gratuito: el estudiante elige una unidad del sílabo (Funciones, Límites, Continuidad, Derivadas, Aplicaciones de la derivada, Integrales), luego una sección (p. ej. 2.2 Límites laterales) y recibe hasta 10 ejercicios resueltos paso a paso, con fórmulas renderizadas por KaTeX. Contenido escrito por el docente en Markdown + LaTeX. Costo: cero.
 
 ## Comandos
 
@@ -13,7 +13,7 @@ Sitio estático y gratuito: el estudiante elige un tema (límites, derivadas, in
 | Previsualizar el build | `npm run preview` |
 | Solo tipos | `npm run check` |
 | Formatear · verificar formato | `npm run format` · `npm run format:check` |
-| Pruebas (sobre `dist/`; antes `npm run build`) | `npm test` · un archivo: `node --test tests/aleatorio.test.mjs` |
+| Pruebas (sobre `dist/`; antes `npm run build`) | `npm test` · un archivo: `node --test tests/contenido.test.mjs` |
 | Build y pruebas como en GitHub Pages | `SITE_URL=https://ejemplo.github.io BASE_PATH=/ejercicios-calculo npm run build` y luego `SITE_URL=https://ejemplo.github.io BASE_PATH=/ejercicios-calculo npm test` |
 
 En Git Bash para Windows, antepón `MSYS2_ENV_CONV_EXCL=BASE_PATH` a esos dos comandos: si no, Git Bash convierte `/ejercicios-calculo` en `C:/Program Files/Git/ejercicios-calculo` y los enlaces salen rotos. En GitHub Actions (Linux) no hace falta.
@@ -28,17 +28,17 @@ Astro 7 estático · TypeScript 6 estricto · CSS propio con tokens · Markdown 
 
 ## Arquitectura
 
-**Camino de una página.** `src/content/ejercicios/<tema>/<slug>.md` → validado por `src/lib/esquema.ts` (registrado en `src/content.config.ts`) → Markdown procesado por `unified()` + `remark-math` + `rehype-katex` + `src/lib/rehype-solucion.mjs` (quita «## Enunciado» y envuelve «## Solución» en `<details class="solucion">`) → `src/components/Ejercicio.astro` dentro de `src/pages/tema/[slug].astro` y `src/pages/ejercicio/[...id].astro` → HTML en `dist/` → `pagefind --site dist` → GitHub Pages.
+**Camino de una página.** `src/content/ejercicios/<tema>/<seccion>/<slug>.md` → validado por `src/lib/esquema.ts` (registrado en `src/content.config.ts`) → Markdown procesado por `unified()` + `remark-math` + `rehype-katex` + `src/lib/rehype-solucion.mjs` (quita «## Enunciado» y envuelve «## Solución» en `<details class="solucion">`) → `src/components/Ejercicio.astro` dentro de `src/pages/tema/[slug]/[seccion].astro` y `src/pages/ejercicio/[...id].astro` → HTML en `dist/` → `pagefind --site dist` → GitHub Pages.
 
-**Selección aleatoria.** El HTML de cada tema trae TODOS sus ejercicios (sin JS se ven los 10 primeros por `orden`). Un `<script>` de Astro importa `src/lib/aleatorio.ts` y oculta con `hidden` los no elegidos (entre 5 y 10).
+**Navegación.** Portada → `tema/<tema>/` (lista de secciones del sílabo, con «Próximamente» si están vacías) → `tema/<tema>/<seccion>/` (todos sus ejercicios, máximo 10, por `orden`) → `ejercicio/<tema>/<seccion>/<slug>/`. El sílabo vive en `src/data/temas.ts`.
 
 **Fronteras.**
 
 | Capa | Puede importar | Nunca |
 |---|---|---|
-| `src/pages/**` | components, layouts, lib, data, `astro:content` | lógica de selección inline (va en `src/lib/aleatorio.ts`) |
+| `src/pages/**` | components, layouts, lib, data, `astro:content` | lógica de datos inline (va en `src/lib/` o `src/data/`) |
 | `src/components/**` | lib, data, otros componentes, `render()` de `astro:content` | `getCollection()` |
-| `src/lib/aleatorio.ts`, `url.ts`, `esquema.ts`, `src/data/temas.ts` | entre sí y `astro/zod` | `astro:*` — las pruebas de Node los importan directamente |
+| `src/lib/url.ts`, `esquema.ts`, `src/data/temas.ts` | entre sí y `astro/zod` | `astro:*` — las pruebas de Node los importan directamente |
 | `tests/**` | `tests/ayudantes.mjs`, los módulos de la fila anterior, `src/lib/rehype-solucion.mjs`, `dist/` | `.astro`, `astro:*`, `src/lib/ejercicios.ts` |
 
 **Fuente única de verdad.**
@@ -104,7 +104,7 @@ Para agregar un ejercicio, sigue la skill `agregar-ejercicio` (`.claude/skills/a
 
 ## No negociable
 
-1. Nunca publiques una respuesta matemática sin que el procedimiento la justifique paso a paso y termine en `**Respuesta:**`.
+1. Nunca publiques una respuesta matemática sin que el procedimiento la justifique paso a paso y termine en `**Resultado final:**`.
 2. Nunca agregues un servicio, API, analítica o dependencia que cueste dinero o pida tarjeta.
 3. Nunca escribas un enlace interno sin `url()`.
 4. Nunca subas TypeScript a 7.x ni KaTeX fuera de la línea 0.16; nunca quites `processor: unified()` de `astro.config.mjs`.

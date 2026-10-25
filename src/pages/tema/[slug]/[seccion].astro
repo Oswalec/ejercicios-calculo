@@ -1,0 +1,80 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Ejercicio from "../../../components/Ejercicio.astro";
+import { temas, type Seccion, type Tema } from "../../../data/temas.ts";
+import { ejerciciosDeSeccion } from "../../../lib/ejercicios.ts";
+import { url } from "../../../lib/url.ts";
+
+export function getStaticPaths() {
+  return temas.flatMap((tema) =>
+    tema.secciones.map((seccion) => ({
+      params: { slug: tema.slug, seccion: seccion.slug },
+      props: { tema, seccion },
+    })),
+  );
+}
+
+interface Props {
+  tema: Tema;
+  seccion: Seccion;
+}
+
+const { tema, seccion } = Astro.props;
+const lista = await ejerciciosDeSeccion(tema.slug, seccion.slug);
+---
+
+<Base
+  titulo={`${seccion.numero} ${seccion.nombre}: ejercicios resueltos | Ejercicios de Cálculo`}
+  descripcion={`Ejercicios resueltos paso a paso de ${seccion.nombre} (${tema.nombre}): ${seccion.contenidos.join(", ")}.`}
+>
+  <a href={url(`tema/${tema.slug}/`)}>
+    ← {tema.numero}. {tema.nombre}
+  </a>
+  <h1>
+    {seccion.numero} {seccion.nombre}
+  </h1>
+  <details class="contenidos">
+    <summary>Contenidos de esta sección</summary>
+    <ul>
+      {seccion.contenidos.map((c) => (
+        <li>{c}</li>
+      ))}
+    </ul>
+  </details>
+  {lista.length === 0 ? (
+    <p class="vacio">Pronto habrá ejercicios de esta sección.</p>
+  ) : (
+    <ol class="lista-ejercicios" data-total={lista.length}>
+      {lista.map((e, i) => (
+        <li class="ejercicio" data-indice={i}>
+          <Ejercicio ejercicio={e} nivelTitulo={2} enlazar={true} />
+        </li>
+      ))}
+    </ol>
+  )}
+  <a href={url(`tema/${tema.slug}/`)}>← Volver a {tema.nombre}</a>
+</Base>
+
+<style>
+  .contenidos {
+    margin-top: var(--espacio-4);
+    color: var(--fg-muted);
+  }
+  .contenidos summary {
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .lista-ejercicios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .vacio {
+    color: var(--fg-muted);
+    margin-block: var(--espacio-8);
+  }
+</style>

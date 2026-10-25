@@ -1,99 +1,72 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
-import { temas } from "../src/data/temas.ts";
+import { buscarSeccion, EJERCICIOS_POR_SECCION } from "../src/data/temas.ts";
 import { esquemaEjercicio } from "../src/lib/esquema.ts";
-import {
-  CONTENIDO,
-  ejerciciosEnDisco,
-  leer,
-  leerFrontmatter,
-} from "./ayudantes.mjs";
+import { ejerciciosEnDisco, leer, leerFrontmatter } from "./ayudantes.mjs";
 
-const ESPERADOS = [
-  "limites/sustitucion-directa.md",
-  "limites/factorizacion-cero-entre-cero.md",
-  "limites/racionalizacion.md",
-  "limites/limite-al-infinito-polinomios.md",
-  "limites/limite-al-infinito-raices.md",
-  "limites/limite-trigonometrico-sen-x-sobre-x.md",
-  "limites/limites-laterales-valor-absoluto.md",
-  "limites/limite-numero-e.md",
-  "limites/continuidad-funcion-a-trozos.md",
-  "limites/teorema-del-sandwich.md",
-  "derivadas/regla-de-la-potencia.md",
-  "derivadas/regla-del-producto.md",
-  "derivadas/regla-del-cociente.md",
-  "derivadas/regla-de-la-cadena.md",
-  "derivadas/derivadas-trigonometricas.md",
-  "derivadas/exponencial-y-logaritmo.md",
-  "derivadas/derivacion-implicita.md",
-  "derivadas/recta-tangente.md",
-  "derivadas/segunda-derivada.md",
-  "derivadas/razon-de-cambio.md",
-  "integrales/integrales-inmediatas.md",
-  "integrales/sustitucion-simple.md",
-  "integrales/integral-trigonometrica-basica.md",
-  "integrales/sustitucion-exponencial.md",
-  "integrales/integracion-por-partes.md",
-  "integrales/por-partes-logaritmo.md",
-  "integrales/fracciones-parciales.md",
-  "integrales/integral-definida-tfc.md",
-  "integrales/area-entre-curvas.md",
-  "integrales/integral-definida-sustitucion.md",
-];
+test("hay ejercicios en disco", () => {
+  assert.ok(ejerciciosEnDisco().length > 0);
+});
 
-test("existen los 30 ejercicios esperados", () => {
-  for (const relativa of ESPERADOS) {
-    assert.ok(existsSync(join(CONTENIDO, relativa)), `falta ${relativa}`);
+test("cada ejercicio está en una sección del sílabo que coincide con su carpeta", () => {
+  for (const { tema, seccion, slug } of ejerciciosEnDisco()) {
+    assert.ok(
+      buscarSeccion(tema, seccion),
+      `${tema}/${seccion}/${slug}: la carpeta no es una sección de src/data/temas.ts`,
+    );
   }
 });
 
-test("cada tema tiene exactamente sus archivos de la lista", () => {
-  const enDisco = ejerciciosEnDisco();
-  for (const tema of temas) {
-    const esperados = ESPERADOS.filter((r) => r.startsWith(`${tema.slug}/`))
-      .map((r) => r.slice(tema.slug.length + 1, -".md".length))
-      .sort();
-    const reales = enDisco
-      .filter((e) => e.tema === tema.slug)
-      .map((e) => e.slug)
-      .sort();
-    assert.deepEqual(reales, esperados, `archivos de ${tema.slug}`);
-    assert.equal(reales.length, 10, `${tema.slug} debe tener 10`);
+test(`ninguna sección pasa de ${EJERCICIOS_POR_SECCION} ejercicios`, () => {
+  const conteo = new Map();
+  for (const { tema, seccion } of ejerciciosEnDisco()) {
+    const clave = `${tema}/${seccion}`;
+    conteo.set(clave, (conteo.get(clave) ?? 0) + 1);
+  }
+  for (const [clave, n] of conteo) {
+    assert.ok(n <= EJERCICIOS_POR_SECCION, `${clave}: ${n} ejercicios`);
   }
 });
 
-test("frontmatter válido, tema = carpeta, orden y título únicos", () => {
+test("frontmatter válido, tema y sección = carpeta, orden y título únicos", () => {
   const titulos = new Set();
   const ordenes = new Map();
-  for (const { tema, slug, ruta } of ejerciciosEnDisco()) {
+  for (const { tema, seccion, slug, ruta } of ejerciciosEnDisco()) {
+    const id = `${tema}/${seccion}/${slug}`;
     const { datos } = leerFrontmatter(leer(ruta));
-    const resultado = esquemaEjercicio.safeParse(datos);
-    assert.ok(resultado.success, `${tema}/${slug}: frontmatter inválido`);
-    assert.equal(datos.tema, tema, `${tema}/${slug}: tema distinto a carpeta`);
-    const usados = ordenes.get(tema) ?? new Set();
-    assert.ok(!usados.has(datos.orden), `${tema}/${slug}: orden repetido`);
+    assert.ok(
+      esquemaEjercicio.safeParse(datos).success,
+      `${id}: frontmatter inválido`,
+    );
+    assert.equal(datos.tema, tema, `${id}: tema distinto a la carpeta`);
+    assert.equal(
+      datos.seccion,
+      seccion,
+      `${id}: sección distinta a la carpeta`,
+    );
+    const clave = `${tema}/${seccion}`;
+    const usados = ordenes.get(clave) ?? new Set();
+    assert.ok(!usados.has(datos.orden), `${id}: orden repetido`);
     usados.add(datos.orden);
-    ordenes.set(tema, usados);
-    assert.ok(!titulos.has(datos.titulo), `${tema}/${slug}: título repetido`);
+    ordenes.set(clave, usados);
+    assert.ok(!titulos.has(datos.titulo), `${id}: título repetido`);
     titulos.add(datos.titulo);
   }
 });
 
-test("cada cuerpo tiene Enunciado, Solución con pasos y Respuesta", () => {
-  for (const { tema, slug, ruta } of ejerciciosEnDisco()) {
+test("cada cuerpo tiene Enunciado, Solución con pasos y Resultado final", () => {
+  for (const { tema, seccion, slug, ruta } of ejerciciosEnDisco()) {
+    const id = `${tema}/${seccion}/${slug}`;
     const { cuerpo } = leerFrontmatter(leer(ruta));
     const iEnunciado = cuerpo.indexOf("## Enunciado");
     const iSolucion = cuerpo.indexOf("## Solución");
-    assert.ok(iEnunciado !== -1, `${tema}/${slug}: falta ## Enunciado`);
-    assert.ok(iSolucion > iEnunciado, `${tema}/${slug}: falta ## Solución`);
+    assert.ok(iEnunciado !== -1, `${id}: falta ## Enunciado`);
+    assert.ok(iSolucion > iEnunciado, `${id}: falta ## Solución`);
     const solucion = cuerpo.slice(iSolucion);
-    assert.ok(solucion.includes("1. "), `${tema}/${slug}: sin pasos numerados`);
+    assert.ok(solucion.includes("1. "), `${id}: sin pasos numerados`);
     assert.ok(
-      solucion.includes("**Respuesta:**"),
-      `${tema}/${slug}: sin **Respuesta:**`,
+      /^\*\*Resultado final:\*\*/m.test(solucion),
+      `${id}: sin **Resultado final:**`,
     );
   }
 });

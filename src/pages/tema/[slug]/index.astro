@@ -1,0 +1,96 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { temas, type Tema } from "../../../data/temas.ts";
+import { ejerciciosDeSeccion } from "../../../lib/ejercicios.ts";
+import { url } from "../../../lib/url.ts";
+
+export function getStaticPaths() {
+  return temas.map((tema) => ({
+    params: { slug: tema.slug },
+    props: { tema },
+  }));
+}
+
+interface Props {
+  tema: Tema;
+}
+
+const { tema } = Astro.props;
+const filas = await Promise.all(
+  tema.secciones.map(async (seccion) => ({
+    seccion,
+    cantidad: (await ejerciciosDeSeccion(tema.slug, seccion.slug)).length,
+  })),
+);
+---
+
+<Base
+  titulo={`${tema.numero}. ${tema.nombre}: secciones con ejercicios resueltos | Ejercicios de Cálculo`}
+  descripcion={tema.descripcion}
+>
+  <h1>
+    {tema.numero}. {tema.nombre}
+  </h1>
+  <p class="lead">{tema.descripcion}</p>
+  <ol class="lista-secciones">
+    {filas.map(({ seccion, cantidad }) => (
+      <li>
+        <a
+          class="tarjeta-seccion"
+          href={url(`tema/${tema.slug}/${seccion.slug}/`)}
+          data-seccion={seccion.slug}
+          data-cantidad={cantidad}
+        >
+          <span class="numero">{seccion.numero}</span>
+          <span class="nombre">{seccion.nombre}</span>
+          <span class="cantidad">
+            {cantidad === 0
+              ? "Próximamente"
+              : `${cantidad} ${cantidad === 1 ? "ejercicio" : "ejercicios"}`}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ol>
+  <a href={url("")}>← Todos los temas</a>
+</Base>
+
+<style>
+  .lista-secciones {
+    list-style: none;
+    padding: 0;
+    margin: var(--espacio-6) 0;
+    display: grid;
+    gap: var(--espacio-3);
+  }
+  .tarjeta-seccion {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var(--espacio-3);
+    align-items: baseline;
+    min-height: 44px;
+    padding: var(--espacio-3) var(--espacio-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radio-md);
+    background: var(--surface);
+    color: var(--fg);
+    text-decoration: none;
+    transition: border-color 120ms ease-out;
+  }
+  .tarjeta-seccion:hover {
+    border-color: var(--primary);
+    color: var(--fg);
+  }
+  .numero {
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .nombre {
+    font-weight: 700;
+  }
+  .cantidad {
+    grid-column: 2;
+    font-size: 0.9375rem;
+    color: var(--fg-muted);
+  }
+</style>

@@ -12,44 +12,58 @@ import {
 } from "./ayudantes.mjs";
 
 for (const tema of temas) {
-  test(`página del tema ${tema.slug}`, () => {
+  test(`unidad ${tema.slug}: lista todas sus secciones`, () => {
     exigirDist();
     const ruta = join(DIST, "tema", tema.slug, "index.html");
     assert.ok(existsSync(ruta), `falta ${ruta}`);
     const html = leer(ruta);
-    assert.match(html, new RegExp(`<h1[^>]*>${tema.nombre}</h1>`));
-    const propios = ejerciciosEnDisco().filter((e) => e.tema === tema.slug);
-    const items = [...html.matchAll(/<li\b[^>]*\bdata-indice="(\d+)"[^>]*>/g)];
-    assert.equal(items.length, propios.length, "cantidad de ejercicios");
-    if (propios.length === 0) {
-      assert.ok(html.includes("Pronto habrá ejercicios de este tema."));
-      return;
+    assert.ok(html.includes(tema.nombre));
+    const enDisco = ejerciciosEnDisco();
+    for (const seccion of tema.secciones) {
+      const etiqueta = [...html.matchAll(/<a\b[^>]*>/g)]
+        .map((m) => m[0])
+        .find((a) => a.includes(`data-seccion="${seccion.slug}"`));
+      assert.ok(etiqueta, `falta la sección ${seccion.numero}`);
+      assert.ok(
+        etiqueta.includes(
+          `href="${PREFIJO}tema/${tema.slug}/${seccion.slug}/"`,
+        ),
+      );
+      const cantidad = enDisco.filter(
+        (e) => e.tema === tema.slug && e.seccion === seccion.slug,
+      ).length;
+      assert.ok(
+        etiqueta.includes(`data-cantidad="${cantidad}"`),
+        `${seccion.numero}: se esperaba ${cantidad}`,
+      );
     }
-    assert.ok(html.includes(`data-total="${propios.length}"`));
-    for (const [etiqueta, indice] of items) {
-      if (Number(indice) >= 10) {
-        assert.match(
-          etiqueta,
-          /\shidden/,
-          `el ítem ${indice} debería estar oculto`,
+  });
+
+  test(`unidad ${tema.slug}: cada sección muestra todos sus ejercicios`, () => {
+    exigirDist();
+    for (const seccion of tema.secciones) {
+      const ruta = join(DIST, "tema", tema.slug, seccion.slug, "index.html");
+      assert.ok(existsSync(ruta), `falta ${ruta}`);
+      const html = leer(ruta);
+      assert.ok(html.includes(seccion.nombre));
+      const propios = ejerciciosEnDisco().filter(
+        (e) => e.tema === tema.slug && e.seccion === seccion.slug,
+      );
+      const items = [...html.matchAll(/<li\b[^>]*\bdata-indice="\d+"/g)];
+      assert.equal(items.length, propios.length, `${seccion.numero}: cantidad`);
+      if (propios.length === 0) {
+        assert.ok(html.includes("Pronto habrá ejercicios de esta sección."));
+        continue;
+      }
+      assert.ok(!/<li\b[^>]*\bdata-indice="\d+"[^>]*\shidden/.test(html));
+      for (const { slug } of propios) {
+        assert.ok(
+          html.includes(
+            `href="${PREFIJO}ejercicio/${tema.slug}/${seccion.slug}/${slug}/"`,
+          ),
+          `falta el enlace a ${slug}`,
         );
       }
-    }
-    assert.ok(html.includes("<details"));
-    assert.ok(html.includes("Ver solución"));
-    const boton = html.match(/<button\b[^>]*id="otros-ejercicios"[^>]*>/);
-    assert.ok(boton, "falta el botón otros-ejercicios");
-    assert.match(boton[0], /\shidden/, "el botón debe venir oculto");
-    assert.match(
-      html,
-      /<p\b[^>]*id="estado-seleccion"[^>]*aria-live="polite"|<p\b[^>]*aria-live="polite"[^>]*id="estado-seleccion"/,
-    );
-    assert.ok(html.includes('<script type="module"'), "falta el script");
-    for (const { slug } of propios) {
-      assert.ok(
-        html.includes(`href="${PREFIJO}ejercicio/${tema.slug}/${slug}/"`),
-        `falta el enlace a ${slug}`,
-      );
     }
   });
 }

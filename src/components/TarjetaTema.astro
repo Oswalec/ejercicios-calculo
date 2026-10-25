@@ -16,10 +16,13 @@ const { tema, cantidad } = Astro.props;
   data-tema={tema.slug}
   data-cantidad={cantidad}
 >
-  <h2>{tema.nombre}</h2>
+  <h2>
+    {tema.numero}. {tema.nombre}
+  </h2>
   <p>{tema.descripcion}</p>
   <p class="cantidad">
-    {cantidad} {cantidad === 1 ? "ejercicio" : "ejercicios"}
+    {tema.secciones.length} secciones · {cantidad}
+    {cantidad === 1 ? "ejercicio" : "ejercicios"}
   </p>
 </a>
 

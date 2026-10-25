@@ -36,12 +36,18 @@ test("la portada carga el buscador con la base correcta", () => {
 
 test("solo las páginas de ejercicio se indexan", () => {
   exigirDist();
-  for (const { tema, slug } of ejerciciosEnDisco()) {
-    const html = leer(join(DIST, "ejercicio", tema, slug, "index.html"));
+  for (const { tema, seccion, slug } of ejerciciosEnDisco()) {
+    const html = leer(
+      join(DIST, "ejercicio", tema, seccion, slug, "index.html"),
+    );
     assert.ok(html.includes("data-pagefind-body"), `${tema}/${slug}`);
   }
-  for (const tema of readdirSync(join(DIST, "tema"))) {
-    const html = leer(join(DIST, "tema", tema, "index.html"));
-    assert.ok(!html.includes("data-pagefind-body"), `tema ${tema}`);
+  const paginasDeTema = readdirSync(join(DIST, "tema"), { recursive: true })
+    .map(String)
+    .filter((ruta) => ruta.endsWith("index.html"));
+  assert.ok(paginasDeTema.length > 0);
+  for (const ruta of paginasDeTema) {
+    const html = leer(join(DIST, "tema", ruta));
+    assert.ok(!html.includes("data-pagefind-body"), `tema ${ruta}`);
   }
 });
