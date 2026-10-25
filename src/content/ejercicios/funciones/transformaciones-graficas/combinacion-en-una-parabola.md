@@ -5,6 +5,19 @@ seccion: "transformaciones-graficas"
 dificultad: "intermedio"
 metodo: "Combinación de transformaciones en orden"
 orden: 6
+grafica:
+  ubicacion: "solucion"
+  x: [-4, 3]
+  y: [-5, 5]
+  curvas:
+    - expr: "x^2"
+      etiqueta: 'f(x) = x^2'
+      estilo: "referencia"
+    - expr: "-2(x + 1)^2 + 3"
+      etiqueta: 'g(x) = -2(x + 1)^2 + 3'
+  puntos:
+    - { x: -1, y: 3, etiqueta: "(−1, 3)" }
+  descripcion: "g es una parábola que abre hacia abajo, más estrecha que f, con vértice en (-1, 3)."
 ---
 
 ## Enunciado

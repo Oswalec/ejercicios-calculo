@@ -12,6 +12,7 @@
   --fg-muted: #5b6660;
   --destructive: #b42318;
   --success: #1b7f4c;
+  --grafica-2: #b45309;
   --font-sans:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
     "Noto Sans", sans-serif;
@@ -46,6 +47,7 @@
     --fg-muted: #9aaba0;
     --destructive: #f97066;
     --success: #3fbf7f;
+    --grafica-2: #f2b705;
   }
 }
 
@@ -170,6 +172,114 @@ td {
 
 th {
   background: var(--bg);
+}
+
+/* Gráficas generadas por src/lib/grafica.mjs (SVG estático, sin JavaScript). */
+.grafica {
+  margin: var(--espacio-4) 0;
+  padding: var(--espacio-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radio-md);
+  background: var(--bg);
+}
+
+.grafica-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+.grafica .cuadricula {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.grafica .eje {
+  stroke: var(--fg-muted);
+  stroke-width: 1.5;
+}
+
+.grafica .marca,
+.grafica .nombre-eje,
+.grafica .etiqueta-punto {
+  fill: var(--fg-muted);
+  font: 400 12px var(--font-sans);
+}
+
+.grafica .nombre-eje {
+  font-style: italic;
+  font-size: 14px;
+}
+
+.grafica .etiqueta-punto {
+  fill: var(--fg);
+  font-weight: 700;
+}
+
+.grafica .curva {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.grafica .curva--principal {
+  stroke: var(--primary);
+}
+
+.grafica .curva--secundaria {
+  stroke: var(--grafica-2);
+}
+
+.grafica .curva--referencia {
+  stroke: var(--fg-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.grafica .punto {
+  fill: var(--fg);
+}
+
+.grafica figcaption {
+  font-size: 0.875rem;
+  color: var(--fg-muted);
+}
+
+.grafica-leyenda {
+  list-style: none;
+  padding: 0;
+  margin: var(--espacio-2) 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-2) var(--espacio-4);
+  color: var(--fg);
+}
+
+.grafica-leyenda li {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.muestra {
+  display: inline-block;
+  width: 1.5rem;
+  border-top: 3px solid var(--primary);
+}
+
+.muestra--secundaria {
+  border-top-color: var(--grafica-2);
+}
+
+.muestra--referencia {
+  border-top: 2px dashed var(--fg-muted);
+}
+
+.grafica-descripcion {
+  margin: var(--espacio-1) 0 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

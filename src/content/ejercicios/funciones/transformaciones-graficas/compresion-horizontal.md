@@ -5,6 +5,17 @@ seccion: "transformaciones-graficas"
 dificultad: "basico"
 metodo: "Compresión horizontal"
 orden: 5
+grafica:
+  ubicacion: "solucion"
+  x: [-1, 7]
+  y: [-1.5, 1.5]
+  curvas:
+    - expr: "sen(x)"
+      etiqueta: 'f(x) = \operatorname{sen} x'
+      estilo: "referencia"
+    - expr: "sen(2x)"
+      etiqueta: 'g(x) = \operatorname{sen}(2x)'
+  descripcion: "g completa dos ondas en el intervalo de 0 a 2π, donde f completa una: su período es π y su rango sigue siendo [-1, 1]."
 ---
 
 ## Enunciado

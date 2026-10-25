@@ -5,6 +5,20 @@ seccion: "transformaciones-graficas"
 dificultad: "basico"
 metodo: "Reflexión −f(x) y f(−x)"
 orden: 3
+grafica:
+  ubicacion: "solucion"
+  x: [-6, 6]
+  y: [-3, 3]
+  curvas:
+    - expr: "sqrt(x)"
+      etiqueta: 'f(x) = \sqrt{x}'
+      estilo: "referencia"
+    - expr: "-sqrt(x)"
+      etiqueta: 'g(x) = -\sqrt{x}'
+    - expr: "sqrt(-x)"
+      etiqueta: 'h(x) = \sqrt{-x}'
+      estilo: "secundaria"
+  descripcion: "f está en el primer cuadrante; g es su reflejo respecto del eje x (cuarto cuadrante) y h su reflejo respecto del eje y (segundo cuadrante)."
 ---
 
 ## Enunciado

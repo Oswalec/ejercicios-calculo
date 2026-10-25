@@ -5,6 +5,19 @@ seccion: "transformaciones-graficas"
 dificultad: "intermedio"
 metodo: "Completación de cuadrados"
 orden: 10
+grafica:
+  ubicacion: "solucion"
+  x: [-2, 6]
+  y: [-6, 8]
+  curvas:
+    - expr: "x^2"
+      etiqueta: 'y = x^2'
+      estilo: "referencia"
+    - expr: "2x^2 - 12x + 13"
+      etiqueta: 'f(x) = 2(x - 3)^2 - 5'
+  puntos:
+    - { x: 3, y: -5, etiqueta: "(3, −5)" }
+  descripcion: "f es la parábola y = x² desplazada 3 a la derecha, estirada verticalmente al doble y bajada 5 unidades, con vértice en (3, -5)."
 ---
 
 ## Enunciado

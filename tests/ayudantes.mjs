@@ -100,8 +100,16 @@ export function leerFrontmatter(texto) {
   const bloque = texto.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
   if (!bloque) throw new Error("Falta el bloque de frontmatter --- … ---");
   const datos = {};
+  let tieneGrafica = false;
   for (const linea of bloque[1].split(/\r?\n/)) {
     if (linea.trim() === "") continue;
+    // El bloque opcional `grafica:` (YAML anidado) lo valida Astro al construir;
+    // aquí solo se registra su presencia y se saltan sus líneas indentadas.
+    if (linea === "grafica:") {
+      tieneGrafica = true;
+      continue;
+    }
+    if (tieneGrafica && /^\s/.test(linea)) continue;
     const par = linea.match(/^([a-z]+):\s*(.+)$/);
     if (!par) throw new Error(`Línea de frontmatter no válida: ${linea}`);
     const valor = par[2].trim();
@@ -109,5 +117,5 @@ export function leerFrontmatter(texto) {
       ? Number(valor)
       : valor.replace(/^"(.*)"$/, "$1");
   }
-  return { datos, cuerpo: texto.slice(bloque[0].length) };
+  return { datos, tieneGrafica, cuerpo: texto.slice(bloque[0].length) };
 }

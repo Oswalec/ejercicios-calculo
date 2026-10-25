@@ -5,6 +5,17 @@ seccion: "transformaciones-graficas"
 dificultad: "basico"
 metodo: "Estiramiento vertical"
 orden: 4
+grafica:
+  ubicacion: "solucion"
+  x: [-1, 7]
+  y: [-3.5, 3.5]
+  curvas:
+    - expr: "sen(x)"
+      etiqueta: 'f(x) = \operatorname{sen} x'
+      estilo: "referencia"
+    - expr: "3 sen(x)"
+      etiqueta: 'g(x) = 3\operatorname{sen} x'
+  descripcion: "g oscila entre -3 y 3 con los mismos ceros y el mismo período 2π que f, que oscila entre -1 y 1."
 ---
 
 ## Enunciado

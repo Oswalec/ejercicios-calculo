@@ -5,6 +5,21 @@ seccion: "transformaciones-graficas"
 dificultad: "intermedio"
 metodo: "Composición de transformaciones sobre |x|"
 orden: 9
+grafica:
+  ubicacion: "solucion"
+  x: [-9, 5]
+  y: [-3, 7]
+  curvas:
+    - expr: "abs(x)"
+      etiqueta: 'f(x) = |x|'
+      estilo: "referencia"
+    - expr: "-abs(x + 2) + 5"
+      etiqueta: 'g(x) = -|x + 2| + 5'
+  puntos:
+    - { x: -2, y: 5, etiqueta: "(−2, 5)" }
+    - { x: -7, y: 0, etiqueta: "(−7, 0)" }
+    - { x: 3, y: 0, etiqueta: "(3, 0)" }
+  descripcion: "g es una V invertida con vértice en (-2, 5) que corta al eje x en (-7, 0) y (3, 0)."
 ---
 
 ## Enunciado

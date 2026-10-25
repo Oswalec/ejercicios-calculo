@@ -5,6 +5,20 @@ seccion: "transformaciones-graficas"
 dificultad: "basico"
 metodo: "Traslación horizontal"
 orden: 2
+grafica:
+  ubicacion: "solucion"
+  x: [-3, 7]
+  y: [-1, 9]
+  curvas:
+    - expr: "x^2"
+      etiqueta: 'f(x) = x^2'
+      estilo: "referencia"
+    - expr: "(x - 4)^2"
+      etiqueta: 'g(x) = (x - 4)^2'
+  puntos:
+    - { x: 0, y: 0, etiqueta: "(0, 0)" }
+    - { x: 4, y: 0, etiqueta: "(4, 0)" }
+  descripcion: "La parábola g es la parábola f desplazada 4 unidades a la derecha; el vértice pasa de (0, 0) a (4, 0)."
 ---
 
 ## Enunciado

@@ -5,6 +5,20 @@ seccion: "transformaciones-graficas"
 dificultad: "basico"
 metodo: "Traslación vertical"
 orden: 1
+grafica:
+  ubicacion: "solucion"
+  x: [-4, 4]
+  y: [-1, 11]
+  curvas:
+    - expr: "x^2"
+      etiqueta: 'f(x) = x^2'
+      estilo: "referencia"
+    - expr: "x^2 + 3"
+      etiqueta: 'g(x) = x^2 + 3'
+  puntos:
+    - { x: 2, y: 4, etiqueta: "(2, 4)" }
+    - { x: 2, y: 7, etiqueta: "(2, 7)" }
+  descripcion: "La parábola g es la parábola f desplazada 3 unidades hacia arriba; el punto (2, 4) pasa a (2, 7)."
 ---
 
 ## Enunciado

@@ -20,6 +20,7 @@ description: Agrega ejercicios resueltos al sitio (Markdown + LaTeX en src/conte
    - `metodo: "…"` (p. ej. «Factorización», «Racionalización con el conjugado», «Teorema del encaje»)
    - `orden: <siguiente entero libre de la sección>`
 5. Cuerpo: `## Enunciado` con el problema (fórmula en `$$ … $$` en líneas propias); `## Solución` con el desarrollo en pasos numerados `1.`, `2.`, … que justifican cada regla; última línea `**Resultado final:** …`.
+5b. Si una gráfica ayuda (transformaciones, asíntotas, discontinuidades, áreas), agrega el bloque opcional `grafica:` descrito en `.claude/rules/contenido.md`; la dibuja el sitio desde la fórmula. Si la gráfica revela la respuesta, usa `ubicacion: "solucion"`.
 6. Criterios del docente: notación correcta; comprobar dominios y soluciones; preferir métodos formales; **no** usar equivalencias asintóticas (~), argumentos heurísticos ni aproximaciones innecesarias; enunciados y soluciones originales (los libros solo como referencia temática).
 7. LaTeX: seno con `\operatorname{sen}`; nada de tildes dentro de `$…$` (usa `\text{}`); ningún `$` fuera de matemáticas.
 

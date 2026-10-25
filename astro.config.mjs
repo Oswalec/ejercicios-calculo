@@ -3,6 +3,7 @@ import sitemap from "@astrojs/sitemap";
 import { unified } from "@astrojs/markdown-remark";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeGrafica from "./src/lib/rehype-grafica.mjs";
 import rehypeSolucion from "./src/lib/rehype-solucion.mjs";
 
 // SITE_URL y BASE_PATH los define el workflow de GitHub Pages.
@@ -23,6 +24,7 @@ export default defineConfig({
     // Astro 7 usa Sätteri por defecto; unified() restaura remark/rehype para KaTeX.
     processor: unified(),
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex, rehypeSolucion],
+    // rehype-grafica va antes de KaTeX (leyendas en LaTeX) y de rehype-solucion.
+    rehypePlugins: [rehypeGrafica, rehypeKatex, rehypeSolucion],
   },
 });
