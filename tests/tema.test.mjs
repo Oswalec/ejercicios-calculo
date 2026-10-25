@@ -37,6 +37,14 @@ for (const tema of temas) {
     }
     assert.ok(html.includes("<details"));
     assert.ok(html.includes("Ver solución"));
+    const boton = html.match(/<button\b[^>]*id="otros-ejercicios"[^>]*>/);
+    assert.ok(boton, "falta el botón otros-ejercicios");
+    assert.match(boton[0], /\shidden/, "el botón debe venir oculto");
+    assert.match(
+      html,
+      /<p\b[^>]*id="estado-seleccion"[^>]*aria-live="polite"|<p\b[^>]*aria-live="polite"[^>]*id="estado-seleccion"/,
+    );
+    assert.ok(html.includes('<script type="module"'), "falta el script");
     for (const { slug } of propios) {
       assert.ok(
         html.includes(`href="${PREFIJO}ejercicio/${tema.slug}/${slug}/"`),
