@@ -34,6 +34,7 @@ export const esquemaGrafica = z
             x: z.number(),
             y: z.number(),
             etiqueta: z.string().optional(),
+            abierto: z.boolean().optional(),
           })
           .strict(),
       )

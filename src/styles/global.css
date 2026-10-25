@@ -243,6 +243,12 @@ th {
   fill: var(--fg);
 }
 
+.grafica .punto--abierto {
+  fill: var(--bg);
+  stroke: var(--fg);
+  stroke-width: 2;
+}
+
 .grafica figcaption {
   font-size: 0.875rem;
   color: var(--fg-muted);

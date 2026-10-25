@@ -330,7 +330,8 @@ export function construirGrafica(spec) {
   const puntos = (spec.puntos ?? []).flatMap((punto) => {
     const nodos = [
       h("circle", {
-        className: ["punto"],
+        // Punto abierto (hueco): el valor no pertenece a la gráfica.
+        className: punto.abierto ? ["punto", "punto--abierto"] : ["punto"],
         cx: r(px(punto.x)),
         cy: r(py(punto.y)),
         r: 4,
