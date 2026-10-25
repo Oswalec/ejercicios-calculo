@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import TarjetaTema from "../components/TarjetaTema.astro";
 import { temas } from "../data/temas.ts";
 import { ejerciciosDeTema } from "../lib/ejercicios.ts";
+import { url } from "../lib/url.ts";
 
 const ordenados = [...temas].sort((a, b) => a.orden - b.orden);
 const tarjetas = await Promise.all(
@@ -19,6 +20,25 @@ const tarjetas = await Promise.all(
 >
   <h1>Ejercicios resueltos de Cálculo</h1>
   <p class="lead">Elige un tema y recibe ejercicios resueltos paso a paso.</p>
+  <section class="busqueda" aria-labelledby="titulo-busqueda">
+    <h2 id="titulo-busqueda">Buscar un ejercicio</h2>
+    <link rel="stylesheet" href={url("pagefind/pagefind-ui.css")} />
+    <div id="buscador"></div>
+    <noscript>
+      La búsqueda necesita JavaScript; elige un tema más abajo.
+    </noscript>
+    <script is:inline src={url("pagefind/pagefind-ui.js")}></script>
+    <script is:inline define:vars={{ baseUrl: url("") }}>
+      window.addEventListener("DOMContentLoaded", () => {
+        new PagefindUI({
+          element: "#buscador",
+          baseUrl,
+          showSubResults: true,
+          showImages: false,
+        });
+      });
+    </script>
+  </section>
   <ul class="grilla-temas">
     {tarjetas.map(({ tema, cantidad }) => (
       <li>

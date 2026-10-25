@@ -35,5 +35,7 @@ if (!tema) throw new Error(`Tema desconocido: ${ejercicio.data.tema}`);
   descripcion={`Ejercicio resuelto paso a paso de ${tema.nombre}: ${ejercicio.data.titulo}.`}
 >
   <a href={url(`tema/${tema.slug}/`)}>← Volver a {tema.nombre}</a>
-  <Ejercicio ejercicio={ejercicio} nivelTitulo={1} enlazar={false} />
+  <div data-pagefind-body>
+    <Ejercicio ejercicio={ejercicio} nivelTitulo={1} enlazar={false} />
+  </div>
 </Base>
