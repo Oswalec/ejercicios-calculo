@@ -1,0 +1,59 @@
+---
+import Base from "../../layouts/Base.astro";
+import Ejercicio from "../../components/Ejercicio.astro";
+import { temas, type Tema } from "../../data/temas.ts";
+import { ejerciciosDeTema } from "../../lib/ejercicios.ts";
+import { url } from "../../lib/url.ts";
+
+export function getStaticPaths() {
+  return temas.map((tema) => ({
+    params: { slug: tema.slug },
+    props: { tema },
+  }));
+}
+
+interface Props {
+  tema: Tema;
+}
+
+const { tema } = Astro.props;
+const lista = await ejerciciosDeTema(tema.slug);
+const total = lista.length;
+const visibles = Math.min(total, 10);
+---
+
+<Base
+  titulo={`Ejercicios resueltos de ${tema.nombre} | Ejercicios de Cálculo`}
+  descripcion={tema.descripcion}
+>
+  <h1>{tema.nombre}</h1>
+  <p class="lead">{tema.descripcion}</p>
+  {total === 0 ? (
+    <p class="vacio">Pronto habrá ejercicios de este tema.</p>
+  ) : (
+    <>
+      <p id="estado-seleccion" aria-live="polite">
+        Mostrando {visibles} de {total} ejercicios.
+      </p>
+      <ol id="lista-ejercicios" class="lista-ejercicios" data-total={total}>
+        {lista.map((e, i) => (
+          <li class="ejercicio" data-indice={i} hidden={i >= 10}>
+            <Ejercicio ejercicio={e} nivelTitulo={2} enlazar={true} />
+          </li>
+        ))}
+      </ol>
+    </>
+  )}
+  <a href={url("")}>← Todos los temas</a>
+</Base>
+
+<style>
+  .lista-ejercicios {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .vacio {
+    color: var(--fg-muted);
+  }
+</style>
