@@ -1,5 +1,16 @@
 ---
 import Base from "../layouts/Base.astro";
+import TarjetaTema from "../components/TarjetaTema.astro";
+import { temas } from "../data/temas.ts";
+import { ejerciciosDeTema } from "../lib/ejercicios.ts";
+
+const ordenados = [...temas].sort((a, b) => a.orden - b.orden);
+const tarjetas = await Promise.all(
+  ordenados.map(async (tema) => ({
+    tema,
+    cantidad: (await ejerciciosDeTema(tema.slug)).length,
+  })),
+);
 ---
 
 <Base
@@ -8,4 +19,32 @@ import Base from "../layouts/Base.astro";
 >
   <h1>Ejercicios resueltos de Cálculo</h1>
   <p class="lead">Elige un tema y recibe ejercicios resueltos paso a paso.</p>
+  <ul class="grilla-temas">
+    {tarjetas.map(({ tema, cantidad }) => (
+      <li>
+        <TarjetaTema tema={tema} cantidad={cantidad} />
+      </li>
+    ))}
+  </ul>
 </Base>
+
+<style>
+  .grilla-temas {
+    list-style: none;
+    padding: 0;
+    margin: var(--espacio-8) 0 0;
+    display: grid;
+    gap: var(--espacio-4);
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 40rem) {
+    .grilla-temas {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 64rem) {
+    .grilla-temas {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

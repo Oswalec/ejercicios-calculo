@@ -1,0 +1,55 @@
+---
+import type { Tema } from "../data/temas.ts";
+import { url } from "../lib/url.ts";
+
+interface Props {
+  tema: Tema;
+  cantidad: number;
+}
+
+const { tema, cantidad } = Astro.props;
+---
+
+<a
+  class="tarjeta-tema"
+  href={url(`tema/${tema.slug}/`)}
+  data-tema={tema.slug}
+  data-cantidad={cantidad}
+>
+  <h2>{tema.nombre}</h2>
+  <p>{tema.descripcion}</p>
+  <p class="cantidad">
+    {cantidad} {cantidad === 1 ? "ejercicio" : "ejercicios"}
+  </p>
+</a>
+
+<style>
+  .tarjeta-tema {
+    display: block;
+    height: 100%;
+    padding: var(--espacio-4) var(--espacio-6) var(--espacio-6);
+    border: 1px solid var(--border);
+    border-radius: var(--radio-md);
+    background: var(--surface);
+    color: var(--fg);
+    text-decoration: none;
+    box-shadow: var(--sombra-1);
+    transition: border-color 120ms ease-out;
+  }
+  .tarjeta-tema:hover {
+    border-color: var(--primary);
+    color: var(--fg);
+  }
+  h2 {
+    color: var(--primary);
+    margin-block: var(--espacio-2);
+  }
+  p {
+    margin-block: var(--espacio-2);
+  }
+  .cantidad {
+    color: var(--fg-muted);
+    font-weight: 700;
+    font-size: 0.9375rem;
+  }
+</style>
