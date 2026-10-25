@@ -1,0 +1,39 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Ejercicio from "../../components/Ejercicio.astro";
+import { buscarTema } from "../../data/temas.ts";
+import { url } from "../../lib/url.ts";
+
+export async function getStaticPaths() {
+  const entradas = await getCollection("ejercicios");
+  for (const entrada of entradas) {
+    const carpeta = entrada.id.split("/")[0];
+    if (carpeta !== entrada.data.tema) {
+      throw new Error(
+        `El ejercicio ${entrada.id} declara tema "${entrada.data.tema}" pero está en la carpeta "${carpeta}".`,
+      );
+    }
+  }
+  return entradas.map((entrada) => ({
+    params: { id: entrada.id },
+    props: { ejercicio: entrada },
+  }));
+}
+
+interface Props {
+  ejercicio: CollectionEntry<"ejercicios">;
+}
+
+const { ejercicio } = Astro.props;
+const tema = buscarTema(ejercicio.data.tema);
+if (!tema) throw new Error(`Tema desconocido: ${ejercicio.data.tema}`);
+---
+
+<Base
+  titulo={`${ejercicio.data.titulo} | Ejercicios de ${tema.nombre}`}
+  descripcion={`Ejercicio resuelto paso a paso de ${tema.nombre}: ${ejercicio.data.titulo}.`}
+>
+  <a href={url(`tema/${tema.slug}/`)}>← Volver a {tema.nombre}</a>
+  <Ejercicio ejercicio={ejercicio} nivelTitulo={1} enlazar={false} />
+</Base>

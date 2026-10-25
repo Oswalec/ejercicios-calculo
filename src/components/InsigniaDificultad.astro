@@ -1,0 +1,39 @@
+---
+interface Props {
+  dificultad: "basico" | "intermedio" | "avanzado";
+}
+
+const { dificultad } = Astro.props;
+const etiquetas = {
+  basico: "Básico",
+  intermedio: "Intermedio",
+  avanzado: "Avanzado",
+} as const;
+const etiqueta = etiquetas[dificultad];
+---
+
+<span class={`insignia insignia--${dificultad}`}>{etiqueta}</span>
+
+<style>
+  .insignia {
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    padding: var(--espacio-1) var(--espacio-3);
+    border-radius: var(--radio-sm);
+    border: 1px solid transparent;
+  }
+  .insignia--basico {
+    background: var(--surface);
+    color: var(--fg);
+    border-color: var(--border);
+  }
+  .insignia--intermedio {
+    background: var(--primary);
+    color: var(--primary-fg);
+  }
+  .insignia--avanzado {
+    background: var(--accent);
+    color: var(--accent-fg);
+  }
+</style>

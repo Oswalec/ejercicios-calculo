@@ -1,0 +1,60 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import InsigniaDificultad from "./InsigniaDificultad.astro";
+import { url } from "../lib/url.ts";
+
+interface Props {
+  ejercicio: CollectionEntry<"ejercicios">;
+  nivelTitulo: 1 | 2;
+  enlazar: boolean;
+}
+
+const { ejercicio, nivelTitulo, enlazar } = Astro.props;
+const { Content } = await render(ejercicio);
+const Titulo = nivelTitulo === 1 ? "h1" : "h2";
+---
+
+<article class="tarjeta-ejercicio">
+  <Titulo class="titulo-ejercicio">{ejercicio.data.titulo}</Titulo>
+  <InsigniaDificultad dificultad={ejercicio.data.dificultad} />
+  <div class="cuerpo-ejercicio">
+    <Content />
+  </div>
+  {enlazar && (
+    <a class="enlace-ejercicio" href={url(`ejercicio/${ejercicio.id}/`)}>
+      Abrir este ejercicio en su propia página
+    </a>
+  )}
+</article>
+
+<style>
+  .tarjeta-ejercicio {
+    border: 1px solid var(--border);
+    border-radius: var(--radio-md);
+    padding: var(--espacio-4) var(--espacio-4) var(--espacio-6);
+    margin-block: var(--espacio-6);
+    box-shadow: var(--sombra-1);
+  }
+  .titulo-ejercicio {
+    margin-block: 0 var(--espacio-2);
+  }
+  .cuerpo-ejercicio :global(details.solucion) {
+    background: var(--surface);
+    border-radius: var(--radio-md);
+    padding: var(--espacio-2) var(--espacio-4);
+    margin-top: var(--espacio-4);
+  }
+  .cuerpo-ejercicio :global(details.solucion > summary) {
+    cursor: pointer;
+    color: var(--primary);
+    font-weight: 700;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .enlace-ejercicio {
+    display: inline-block;
+    margin-top: var(--espacio-4);
+    font-size: 0.9375rem;
+  }
+</style>
