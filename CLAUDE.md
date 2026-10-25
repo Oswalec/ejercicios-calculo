@@ -16,6 +16,8 @@ Sitio estático y gratuito: el estudiante elige un tema (límites, derivadas, in
 | Pruebas (sobre `dist/`; antes `npm run build`) | `npm test` · un archivo: `node --test tests/aleatorio.test.mjs` |
 | Build y pruebas como en GitHub Pages | `SITE_URL=https://ejemplo.github.io BASE_PATH=/ejercicios-calculo npm run build` y luego `SITE_URL=https://ejemplo.github.io BASE_PATH=/ejercicios-calculo npm test` |
 
+En Git Bash para Windows, antepón `MSYS2_ENV_CONV_EXCL=BASE_PATH` a esos dos comandos: si no, Git Bash convierte `/ejercicios-calculo` en `C:/Program Files/Git/ejercicios-calculo` y los enlaces salen rotos. En GitHub Actions (Linux) no hace falta.
+
 **Puerta:** `npm run format:check && npm run build && npm test` sale con 0 antes de dar por terminada cualquier tarea.
 
 Node se fija en `.nvmrc` (línea 24) y `.npmrc` tiene `engine-strict=true`. Las versiones viven en `package-lock.json`: léelo, nunca adivines una versión. El estado de la construcción está en `blueprints/ejercicios-calculo/tasks.json`, el detalle de cada tarea en `blueprints/ejercicios-calculo/epics/` y el diseño en `blueprints/ejercicios-calculo/blueprint.md`. No edites nada dentro de `blueprints/` salvo el campo `status` de `tasks.json`.
