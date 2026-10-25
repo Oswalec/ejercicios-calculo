@@ -151,6 +151,27 @@ a:hover {
   overflow-y: hidden;
 }
 
+/* Tablas de valores dentro de las soluciones: se desplazan en móvil. */
+table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin-block: var(--espacio-3);
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: var(--espacio-1) var(--espacio-3);
+  text-align: center;
+  white-space: nowrap;
+}
+
+th {
+  background: var(--bg);
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
